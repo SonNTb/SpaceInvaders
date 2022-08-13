@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject EnemyGO; //The EnemyGO prefabs
     public Transform[] spawnPoints; //List of points where enemies are spawned
 
+    private ObjectPool objectPool;
     public float spawnRate; //The rate to spawn enemy after user clicks on play
     float startSpawnRate; //The rate to spawn enemy when the user clicks on play
     int randomSpawnPoint;
@@ -15,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        objectPool = FindObjectOfType<ObjectPool>();
         startSpawnRate = spawnRate;
     }
 
@@ -32,7 +34,10 @@ public class EnemySpawner : MonoBehaviour
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         //Instantiate an enemy
-        Instantiate(EnemyGO, spawnPoints[randomSpawnPoint].position, rotation);
+        //Instantiate(EnemyGO, spawnPoints[randomSpawnPoint].position, rotation);
+        GameObject newEnenmy = objectPool.GetObject(EnemyGO, spawnPoints[randomSpawnPoint].position, rotation);
+        //newEnenmy.transform.position = spawnPoints[randomSpawnPoint].position;
+        //newEnenmy.transform.rotation = rotation;
 
         //Schedule when to spawn next enemy
         ScheduleNextEnemySpawn();

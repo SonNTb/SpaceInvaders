@@ -121,9 +121,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ExplosiveGO: {fileID: 8923509646191740901, guid: f9a27c19d01481d488540ff8556beebf, type: 3}
+  EnemyBulletGO: {fileID: 843482031296869185, guid: 063012087bde3744fa7505f4f3e90c3b, type: 3}
   moveSpeed: 1
   moveSpeedMax: 4
   moveSpeedStart: 1
+  rateOfFire: 3
 --- !u!61 &6536540413765376929
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -159,7 +161,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5920267359952196352}
-  - component: {fileID: 5185943297864377225}
   m_Layer: 0
   m_Name: EnemyGunGO
   m_TagString: Untagged
@@ -182,16 +183,3 @@ Transform:
   m_Father: {fileID: 5980089622940295729}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5185943297864377225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8229792660756223810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ab7c47111bb7194b9a4570249c0e80e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyBulletGO: {fileID: 843482031296869185, guid: 063012087bde3744fa7505f4f3e90c3b, type: 3}

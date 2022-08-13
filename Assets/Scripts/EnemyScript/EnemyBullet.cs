@@ -9,11 +9,13 @@ public class EnemyBullet : MonoBehaviour
     public float speedStart; //Move speed when user press play
     Vector2 _dir; //The dirrection of the bullet
     bool isReady; //To know when thee bullet direction is set
+    private ObjectPool objectPool;
 
     // Set default value in Awake function
     private void Awake()
     {
-           isReady = false;
+        objectPool = FindObjectOfType<ObjectPool>();
+        isReady = false;
     }
 
     //Function to set the bullet's direction
@@ -45,7 +47,9 @@ public class EnemyBullet : MonoBehaviour
             //Remove the bullet from game if the the bullet go outside the screen
             if (transform.position.x < min.x || transform.position.x > max.x || transform.position.y < min.y || transform.position.y > max.y)
             {
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                isReady = false;
+                objectPool.ReturnGameObject(this.gameObject);
             }
         }
     }
@@ -56,7 +60,9 @@ public class EnemyBullet : MonoBehaviour
         if (collision.tag == "PlayerShipTag")
         {
             //Destroy this enemy's bullet
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            isReady = false;
+            objectPool.ReturnGameObject(this.gameObject);
         }
     }
 
@@ -74,7 +80,7 @@ public class EnemyBullet : MonoBehaviour
     //Function to start increase enemy's bullet moving speed
     public void StartIncreaseMovingSpeed()
     {
-        speedStart = speed;
+        speed = speedStart;
 
         InvokeRepeating("IncreaseMovingSpeed",30f, 30f);
     }

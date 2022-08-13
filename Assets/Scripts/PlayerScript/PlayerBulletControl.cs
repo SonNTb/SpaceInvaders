@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerBulletControl : MonoBehaviour
 {
+    ObjectPool objectPool;
+    private void Start()
+    {
+        objectPool = FindObjectOfType<ObjectPool>();
+    }
     private void Update()
     {
         // Get the bullet's current position 
@@ -16,7 +21,8 @@ public class PlayerBulletControl : MonoBehaviour
         //Remove the bullet from game if the bullet go outside the screen
         if (pos.x < min.x || pos.x > max.x || pos.y < min.y || pos.y > max.y) 
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            objectPool.ReturnGameObject(this.gameObject);
         }
     }
 
@@ -26,7 +32,8 @@ public class PlayerBulletControl : MonoBehaviour
         if (collision.tag == "EnemyShipTag")
         {
             //Destroy this player bullet
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            objectPool.ReturnGameObject(this.gameObject);
         }
     }
 }

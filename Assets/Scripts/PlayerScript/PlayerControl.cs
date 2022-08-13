@@ -17,6 +17,7 @@ public class PlayerControl : MonoBehaviour
     public Transform firePoint2;    //Shooting postion 2
     public GameObject ExplosionGO; //Explosive Prefab
     public GameObject GameManagerGO; //reference to our game manager
+    ObjectPool objectPool;
 
     AudioSource audioData;
 
@@ -37,6 +38,7 @@ public class PlayerControl : MonoBehaviour
         //Set this player game object to active
         gameObject.SetActive(true);
         audioData = GetComponent<AudioSource>();
+        objectPool = FindObjectOfType<ObjectPool>();
 
     }
 
@@ -101,8 +103,16 @@ public class PlayerControl : MonoBehaviour
     void Fire()
     {
         //Init the bullet
-        GameObject bullet01 = Instantiate(PlayerBulletGO, firePoint1.position, firePoint1.rotation);
-        GameObject bullet02 = Instantiate(PlayerBulletGO, firePoint2.position, firePoint2.rotation);
+        //GameObject bullet01 = Instantiate(PlayerBulletGO, firePoint1.position, firePoint1.rotation);
+        //GameObject bullet02 = Instantiate(PlayerBulletGO, firePoint2.position, firePoint2.rotation);
+        GameObject bullet01 = objectPool.GetObject(PlayerBulletGO, firePoint1.position, firePoint1.rotation);
+        //bullet01.transform.position = firePoint1.position;
+        //bullet01.transform.rotation = firePoint1.rotation;
+
+        GameObject bullet02 = objectPool.GetObject(PlayerBulletGO, firePoint2.position, firePoint2.rotation);
+        //bullet02.transform.position = firePoint2.position;
+        //bullet02.transform.rotation = firePoint2.rotation;
+
         bullet01.GetComponent<Rigidbody2D>().AddForce(firePoint1.up * fireForce, ForceMode2D.Impulse);
         bullet02.GetComponent<Rigidbody2D>().AddForce(firePoint2.up * fireForce, ForceMode2D.Impulse);
     }

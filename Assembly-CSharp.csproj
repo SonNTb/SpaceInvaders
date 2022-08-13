@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{A524842E-E68A-E4C1-63C8-71D08EF500FA}</ProjectGuid>
+    <ProjectGuid>{435C8792-8CED-684F-1777-1C6A741F16E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -66,9 +66,9 @@
     <Compile Include="Assets\Scripts\GameScript\GameScore.cs" />
     <Compile Include="Assets\Scripts\EnemyScript\EnemyBullet.cs" />
     <Compile Include="Assets\Scripts\PlayerScript\PlayerBulletControl.cs" />
+    <Compile Include="Assets\Scripts\GameScript\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\GameScript\StarGenerator.cs" />
     <Compile Include="Assets\Scripts\GameScript\PlanetController.cs" />
-    <Compile Include="Assets\Scripts\EnemyScript\EnenyGun.cs" />
     <Compile Include="Assets\Scripts\GameScript\GameManager.cs" />
   </ItemGroup>
   <ItemGroup>

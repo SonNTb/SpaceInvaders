@@ -5,23 +5,37 @@ using UnityEngine;
 public class EnemyControl : MonoBehaviour
 {
     public GameObject ExplosiveGO; //Explosive Prefab
+    public GameObject EnemyBulletGO; //The enemy bullet prefab
     GameObject scoreUITextGO; //Reference to the text UI game object
+    private ObjectPool objectPool;
 
     public float moveSpeed; //Moving speed of the enemy
     public float moveSpeedMax;//The maximum speed of the enemy
     public float moveSpeedStart; //Enemy's moving speed when user press play
+    public float rateOfFire; //Rate of fire
+    private float timePass = 0;
     int lives; //Number of enemy's lives
     Vector2 _dir; //Direction to the Player's ship
 
-    private void Awake()
-    {
-        GameObject playerShip = GameObject.Find("PlayerGO");
-        _dir = (playerShip.transform.position - transform.position).normalized;
-        lives = 1;
-    }
-
+    //private void Awake()
+    //{
+    //    GameObject playerShip = GameObject.Find("PlayerGO");
+    //    _dir = (playerShip.transform.position - transform.position).normalized;
+    //    lives = 1;
+    //}
+    //
     private void Start()
     {
+        //Get the score UI
+        //scoreUITextGO = GameObject.FindGameObjectWithTag("ScoreTextTag");
+        objectPool = FindObjectOfType<ObjectPool>();
+    }
+
+    private void OnEnable()
+    {
+        GameObject playerShip = GameObject.Find("PlayerGO");
+        _dir = (playerShip.transform.position - this.transform.position).normalized;
+        lives = 1;
         //Get the score UI
         scoreUITextGO = GameObject.FindGameObjectWithTag("ScoreTextTag");
     }
@@ -29,8 +43,14 @@ public class EnemyControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timePass += Time.deltaTime;
+        if (timePass > rateOfFire)
+        {
+            timePass = 0;
+            FireEnemyBullet();
+        }
         //Get the enemy's current position
-        Vector2 pos = transform.position;
+        Vector2 pos = this.transform.position;
 
         //Compute the enemy's new position
         pos += _dir * moveSpeed * Time.deltaTime;
@@ -45,7 +65,12 @@ public class EnemyControl : MonoBehaviour
         //Remove the enemy from game if the enemy go outside the screen
         if (transform.position.x < min.x || transform.position.x > max.x || transform.position.y < min.y || transform.position.y > max.y)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            //.transform.rotation = Quaternion.identity;
+            if (objectPool!=null)
+            {
+                objectPool.ReturnGameObject(this.gameObject);
+            }
         }
     }
 
@@ -62,7 +87,12 @@ public class EnemyControl : MonoBehaviour
                 //Add 100 points to the score
                 scoreUITextGO.GetComponent<GameScore>().Score += 100;
                 //Destroy this enemy ship
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                //this.transform.rotation = Quaternion.identity;
+                if (objectPool != null)
+                {
+                    objectPool.ReturnGameObject(this.gameObject);
+                }
             }
         }
     }
@@ -99,5 +129,29 @@ public class EnemyControl : MonoBehaviour
     public void ResetMovingSpeed()
     {
         moveSpeed = moveSpeedStart;
+    }
+
+    //Function to fire an enemy bullet
+    void FireEnemyBullet()
+    {
+        //Get a reference to the PlayerGO
+        GameObject playerShip = GameObject.Find("PlayerGO");
+
+        //If the player still alive
+        if (playerShip != null)
+        {
+            //Instantiate an enemy bullet
+            GameObject bullet = objectPool.GetObject(EnemyBulletGO, this.gameObject.transform.GetChild(0).transform.position, Quaternion.identity);
+
+            //Set the bullet's initial position
+            //bullet.transform.position = transform.position;
+
+            //Compute the bullet's direction toward to the Player
+            Vector2 _dir = playerShip.transform.position - bullet.transform.position;
+
+            //Set the bullet's direction
+            bullet.GetComponent<EnemyBullet>().SetDirection(_dir);
+
+        }
     }
 }
